@@ -24,7 +24,11 @@ class _AgreementListScreenState extends State<AgreementListScreen> {
   Future<void> _load() async {
     try {
       final data = await _api.getAgreements();
-      if (mounted) setState(() { _agreements = data; _loading = false; });
+      if (mounted)
+        setState(() {
+          _agreements = data;
+          _loading = false;
+        });
     } catch (_) {
       if (mounted) setState(() => _loading = false);
     }
@@ -35,7 +39,10 @@ class _AgreementListScreenState extends State<AgreementListScreen> {
     return Scaffold(
       appBar: const GradientAppBar(title: 'Rental Agreements'),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pushNamed(context, '/agreements/create').then((_) => _load()),
+        onPressed: () => Navigator.pushNamed(
+          context,
+          '/agreements/create',
+        ).then((_) => _load()),
         backgroundColor: const Color(0xFF02AFEF),
         child: const Icon(Icons.add),
       ),
@@ -49,9 +56,15 @@ class _AgreementListScreenState extends State<AgreementListScreen> {
                 return Card(
                   child: ListTile(
                     title: Text('₹${a['rentAmount']}/month'),
-                    subtitle: Text('${a['propertyId']?['name'] ?? ''} • ${a['tenantId']?['name'] ?? ''}'),
+                    subtitle: Text(
+                      '${a['propertyId']?['name'] ?? ''} • ${a['tenantId']?['name'] ?? ''}',
+                    ),
                     trailing: StatusBadge(status: a['status'] ?? 'draft'),
-                    onTap: () => Navigator.pushNamed(context, '/agreements/detail', arguments: a),
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      '/agreements/detail',
+                      arguments: a,
+                    ),
                   ),
                 );
               },
@@ -72,8 +85,8 @@ class _CreateAgreementScreenState extends State<CreateAgreementScreen> {
   final _termsController = TextEditingController();
   String? _propertyId;
   String? _tenantId;
-  DateTime _startDate = DateTime.now();
-  DateTime _endDate = DateTime.now().add(const Duration(days: 365));
+  final DateTime _startDate = DateTime.now();
+  final DateTime _endDate = DateTime.now().add(const Duration(days: 365));
   List<dynamic> _properties = [];
   List<dynamic> _tenants = [];
   bool _loading = false;
@@ -88,7 +101,11 @@ class _CreateAgreementScreenState extends State<CreateAgreementScreen> {
   Future<void> _loadData() async {
     final props = await _api.getProperties();
     final tenants = await _api.getTenants();
-    if (mounted) setState(() { _properties = props; _tenants = tenants; });
+    if (mounted)
+      setState(() {
+        _properties = props;
+        _tenants = tenants;
+      });
   }
 
   Future<void> _submit() async {
@@ -106,7 +123,10 @@ class _CreateAgreementScreenState extends State<CreateAgreementScreen> {
       });
       if (mounted) Navigator.pop(context);
     } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      if (mounted)
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -122,23 +142,55 @@ class _CreateAgreementScreenState extends State<CreateAgreementScreen> {
           children: [
             DropdownButtonFormField<String>(
               decoration: const InputDecoration(labelText: 'Property'),
-              items: _properties.map((p) => DropdownMenuItem<String>(value: p['_id'].toString(), child: Text(p['name'].toString()))).toList(),
+              items: _properties
+                  .map(
+                    (p) => DropdownMenuItem<String>(
+                      value: p['_id'].toString(),
+                      child: Text(p['name'].toString()),
+                    ),
+                  )
+                  .toList(),
               onChanged: (v) => setState(() => _propertyId = v),
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
               decoration: const InputDecoration(labelText: 'Tenant'),
-              items: _tenants.map((t) => DropdownMenuItem<String>(value: t['_id'].toString(), child: Text(t['name'].toString()))).toList(),
+              items: _tenants
+                  .map(
+                    (t) => DropdownMenuItem<String>(
+                      value: t['_id'].toString(),
+                      child: Text(t['name'].toString()),
+                    ),
+                  )
+                  .toList(),
               onChanged: (v) => setState(() => _tenantId = v),
             ),
             const SizedBox(height: 12),
-            TextField(controller: _rentController, decoration: const InputDecoration(labelText: 'Rent Amount'), keyboardType: TextInputType.number),
+            TextField(
+              controller: _rentController,
+              decoration: const InputDecoration(labelText: 'Rent Amount'),
+              keyboardType: TextInputType.number,
+            ),
             const SizedBox(height: 12),
-            TextField(controller: _depositController, decoration: const InputDecoration(labelText: 'Security Deposit'), keyboardType: TextInputType.number),
+            TextField(
+              controller: _depositController,
+              decoration: const InputDecoration(labelText: 'Security Deposit'),
+              keyboardType: TextInputType.number,
+            ),
             const SizedBox(height: 12),
-            TextField(controller: _termsController, decoration: const InputDecoration(labelText: 'Terms & Conditions'), maxLines: 4),
+            TextField(
+              controller: _termsController,
+              decoration: const InputDecoration(
+                labelText: 'Terms & Conditions',
+              ),
+              maxLines: 4,
+            ),
             const SizedBox(height: 24),
-            GradientButton(label: 'Create Agreement', onPressed: _submit, isLoading: _loading),
+            GradientButton(
+              label: 'Create Agreement',
+              onPressed: _submit,
+              isLoading: _loading,
+            ),
           ],
         ),
       ),
@@ -160,9 +212,15 @@ class _AgreementDetailScreenState extends State<AgreementDetailScreen> {
     setState(() => _loading = true);
     try {
       await _api.generateAgreementPdf(agreement['_id']);
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('PDF generated')));
+      if (mounted)
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('PDF generated')));
     } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      if (mounted)
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -170,12 +228,16 @@ class _AgreementDetailScreenState extends State<AgreementDetailScreen> {
 
   Future<void> _eSign(Map<String, dynamic> agreement) async {
     await _api.eSignAgreement(agreement['_id']);
-    if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('E-Sign completed')));
+    if (mounted)
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('E-Sign completed')));
   }
 
   @override
   Widget build(BuildContext context) {
-    final agreement = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final agreement =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     return Scaffold(
       appBar: const GradientAppBar(title: 'Agreement Details'),
       body: Padding(
@@ -189,17 +251,28 @@ class _AgreementDetailScreenState extends State<AgreementDetailScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Rent: ₹${agreement['rentAmount']}/month', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    Text(
+                      'Rent: ₹${agreement['rentAmount']}/month',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     Text('Deposit: ₹${agreement['securityDeposit']}'),
                     Text('E-Sign: ${agreement['eSignStatus']}'),
-                    if (agreement['pdfUrl'] != null && agreement['pdfUrl'].toString().isNotEmpty)
+                    if (agreement['pdfUrl'] != null &&
+                        agreement['pdfUrl'].toString().isNotEmpty)
                       Text('PDF: ${agreement['pdfUrl']}'),
                   ],
                 ),
               ),
             ),
             const SizedBox(height: 16),
-            GradientButton(label: 'Generate Agreement PDF', onPressed: () => _generatePdf(agreement), isLoading: _loading),
+            GradientButton(
+              label: 'Generate Agreement PDF',
+              onPressed: () => _generatePdf(agreement),
+              isLoading: _loading,
+            ),
             const SizedBox(height: 12),
             GradientButton(label: 'E-Sign', onPressed: () => _eSign(agreement)),
           ],

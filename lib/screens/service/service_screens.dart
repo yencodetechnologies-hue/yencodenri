@@ -7,7 +7,8 @@ import '../../services/api_service.dart';
 class ServiceRequestListScreen extends StatefulWidget {
   const ServiceRequestListScreen({super.key});
   @override
-  State<ServiceRequestListScreen> createState() => _ServiceRequestListScreenState();
+  State<ServiceRequestListScreen> createState() =>
+      _ServiceRequestListScreenState();
 }
 
 class _ServiceRequestListScreenState extends State<ServiceRequestListScreen> {
@@ -24,7 +25,11 @@ class _ServiceRequestListScreenState extends State<ServiceRequestListScreen> {
   Future<void> _load() async {
     try {
       final data = await _api.getServiceRequests();
-      if (mounted) setState(() { _requests = data; _loading = false; });
+      if (mounted)
+        setState(() {
+          _requests = data;
+          _loading = false;
+        });
     } catch (_) {
       if (mounted) setState(() => _loading = false);
     }
@@ -35,7 +40,10 @@ class _ServiceRequestListScreenState extends State<ServiceRequestListScreen> {
     return Scaffold(
       appBar: const GradientAppBar(title: 'Service Requests'),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pushNamed(context, '/service-requests/create').then((_) => _load()),
+        onPressed: () => Navigator.pushNamed(
+          context,
+          '/service-requests/create',
+        ).then((_) => _load()),
         backgroundColor: const Color(0xFF02AFEF),
         child: const Icon(Icons.add),
       ),
@@ -49,7 +57,9 @@ class _ServiceRequestListScreenState extends State<ServiceRequestListScreen> {
                 return Card(
                   child: ListTile(
                     leading: Icon(_categoryIcon(r['category'])),
-                    title: Text(r['category']?.toString().replaceAll('_', ' ') ?? ''),
+                    title: Text(
+                      r['category']?.toString().replaceAll('_', ' ') ?? '',
+                    ),
                     subtitle: Text(r['description'] ?? ''),
                     trailing: StatusBadge(status: r['status'] ?? 'open'),
                   ),
@@ -61,11 +71,16 @@ class _ServiceRequestListScreenState extends State<ServiceRequestListScreen> {
 
   IconData _categoryIcon(String? cat) {
     switch (cat) {
-      case 'plumbing': return Icons.plumbing;
-      case 'electrical': return Icons.electrical_services;
-      case 'cleaning': return Icons.cleaning_services;
-      case 'painting': return Icons.format_paint;
-      default: return Icons.handyman;
+      case 'plumbing':
+        return Icons.plumbing;
+      case 'electrical':
+        return Icons.electrical_services;
+      case 'cleaning':
+        return Icons.cleaning_services;
+      case 'painting':
+        return Icons.format_paint;
+      default:
+        return Icons.handyman;
     }
   }
 }
@@ -73,10 +88,12 @@ class _ServiceRequestListScreenState extends State<ServiceRequestListScreen> {
 class CreateServiceRequestScreen extends StatefulWidget {
   const CreateServiceRequestScreen({super.key});
   @override
-  State<CreateServiceRequestScreen> createState() => _CreateServiceRequestScreenState();
+  State<CreateServiceRequestScreen> createState() =>
+      _CreateServiceRequestScreenState();
 }
 
-class _CreateServiceRequestScreenState extends State<CreateServiceRequestScreen> {
+class _CreateServiceRequestScreenState
+    extends State<CreateServiceRequestScreen> {
   String _category = 'plumbing';
   final _descController = TextEditingController();
   bool _loading = false;
@@ -85,10 +102,16 @@ class _CreateServiceRequestScreenState extends State<CreateServiceRequestScreen>
   Future<void> _submit() async {
     setState(() => _loading = true);
     try {
-      await _api.createServiceRequest({'category': _category, 'description': _descController.text});
+      await _api.createServiceRequest({
+        'category': _category,
+        'description': _descController.text,
+      });
       if (mounted) Navigator.pop(context);
     } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      if (mounted)
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -103,23 +126,40 @@ class _CreateServiceRequestScreenState extends State<CreateServiceRequestScreen>
         child: Column(
           children: [
             DropdownButtonFormField<String>(
-              value: _category,
+              initialValue: _category,
               decoration: const InputDecoration(labelText: 'Category'),
               items: const [
                 DropdownMenuItem(value: 'plumbing', child: Text('Plumbing')),
-                DropdownMenuItem(value: 'electrical', child: Text('Electrical')),
+                DropdownMenuItem(
+                  value: 'electrical',
+                  child: Text('Electrical'),
+                ),
                 DropdownMenuItem(value: 'cleaning', child: Text('Cleaning')),
                 DropdownMenuItem(value: 'painting', child: Text('Painting')),
-                DropdownMenuItem(value: 'pest_control', child: Text('Pest Control')),
+                DropdownMenuItem(
+                  value: 'pest_control',
+                  child: Text('Pest Control'),
+                ),
                 DropdownMenuItem(value: 'carpentry', child: Text('Carpentry')),
-                DropdownMenuItem(value: 'appliance_repair', child: Text('Appliance Repair')),
+                DropdownMenuItem(
+                  value: 'appliance_repair',
+                  child: Text('Appliance Repair'),
+                ),
               ],
               onChanged: (v) => setState(() => _category = v!),
             ),
             const SizedBox(height: 12),
-            TextField(controller: _descController, decoration: const InputDecoration(labelText: 'Description'), maxLines: 4),
+            TextField(
+              controller: _descController,
+              decoration: const InputDecoration(labelText: 'Description'),
+              maxLines: 4,
+            ),
             const SizedBox(height: 24),
-            GradientButton(label: 'Submit Request', onPressed: _submit, isLoading: _loading),
+            GradientButton(
+              label: 'Submit Request',
+              onPressed: _submit,
+              isLoading: _loading,
+            ),
           ],
         ),
       ),

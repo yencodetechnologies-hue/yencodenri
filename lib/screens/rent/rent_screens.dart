@@ -25,7 +25,11 @@ class _RentPaymentScreenState extends State<RentPaymentScreen> {
   Future<void> _load() async {
     try {
       final data = await _api.getRentHistory();
-      if (mounted) setState(() { _history = data; _loading = false; });
+      if (mounted)
+        setState(() {
+          _history = data;
+          _loading = false;
+        });
     } catch (_) {
       if (mounted) setState(() => _loading = false);
     }
@@ -41,16 +45,24 @@ class _RentPaymentScreenState extends State<RentPaymentScreen> {
           : ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                const Text('Payment History', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                const Text(
+                  'Payment History',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(height: 12),
-                ..._history.map((p) => Card(
-                      child: ListTile(
-                        title: Text(currency.format(p['amount'])),
-                        subtitle: Text('Due: ${p['dueDate']?.toString().substring(0, 10) ?? ''} • ${p['method'] ?? ''}'),
-                        trailing: StatusBadge(status: p['status'] ?? 'pending'),
+                ..._history.map(
+                  (p) => Card(
+                    child: ListTile(
+                      title: Text(currency.format(p['amount'])),
+                      subtitle: Text(
+                        'Due: ${p['dueDate']?.toString().substring(0, 10) ?? ''} • ${p['method'] ?? ''}',
                       ),
-                    )),
-                if (_history.isEmpty) const Center(child: Text('No payment history')),
+                      trailing: StatusBadge(status: p['status'] ?? 'pending'),
+                    ),
+                  ),
+                ),
+                if (_history.isEmpty)
+                  const Center(child: Text('No payment history')),
               ],
             ),
     );
@@ -66,7 +78,6 @@ class MaintenanceScreen extends StatefulWidget {
 class _MaintenanceScreenState extends State<MaintenanceScreen> {
   final _api = ApiService();
   List<dynamic> _history = [];
-  bool _loading = true;
 
   @override
   void initState() {
@@ -77,10 +88,11 @@ class _MaintenanceScreenState extends State<MaintenanceScreen> {
   Future<void> _load() async {
     try {
       final data = await _api.getMaintenanceHistory();
-      if (mounted) setState(() { _history = data; _loading = false; });
-    } catch (_) {
-      if (mounted) setState(() => _loading = false);
-    }
+      if (mounted)
+        setState(() {
+          _history = data;
+        });
+    } catch (_) {}
   }
 
   Future<void> _pay(String type) async {
@@ -94,9 +106,15 @@ class _MaintenanceScreenState extends State<MaintenanceScreen> {
         'amount': 5000,
       });
       _load();
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Payment initiated')));
+      if (mounted)
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Payment initiated')));
     } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      if (mounted)
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 
@@ -107,17 +125,31 @@ class _MaintenanceScreenState extends State<MaintenanceScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          GradientButton(label: 'Pay Society Maintenance', onPressed: () => _pay('society')),
+          GradientButton(
+            label: 'Pay Society Maintenance',
+            onPressed: () => _pay('society'),
+          ),
           const SizedBox(height: 12),
-          GradientButton(label: 'Pay Utility Bill', onPressed: () => _pay('utility')),
+          GradientButton(
+            label: 'Pay Utility Bill',
+            onPressed: () => _pay('utility'),
+          ),
           const SizedBox(height: 12),
-          GradientButton(label: 'Pay Property Tax', onPressed: () => _pay('property_tax')),
+          GradientButton(
+            label: 'Pay Property Tax',
+            onPressed: () => _pay('property_tax'),
+          ),
           const SizedBox(height: 24),
-          const Text('Payment History', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          ..._history.map((p) => ListTile(
-                title: Text('${p['type']} - ₹${p['amount']}'),
-                trailing: StatusBadge(status: p['status']),
-              )),
+          const Text(
+            'Payment History',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          ..._history.map(
+            (p) => ListTile(
+              title: Text('${p['type']} - ₹${p['amount']}'),
+              trailing: StatusBadge(status: p['status']),
+            ),
+          ),
         ],
       ),
     );

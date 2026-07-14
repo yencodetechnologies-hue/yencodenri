@@ -38,11 +38,16 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
         'propertyType': _propertyType,
       });
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Property added')));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Property added')));
         Navigator.pop(context);
       }
     } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      if (mounted)
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -58,33 +63,76 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
           key: _formKey,
           child: Column(
             children: [
-              TextFormField(controller: _nameController, decoration: const InputDecoration(labelText: 'Property Name'), validator: (v) => v!.isEmpty ? 'Required' : null),
+              TextFormField(
+                controller: _nameController,
+                decoration: const InputDecoration(labelText: 'Property Name'),
+                validator: (v) => v!.isEmpty ? 'Required' : null,
+              ),
               const SizedBox(height: 12),
-              TextFormField(controller: _holderController, decoration: const InputDecoration(labelText: 'Property Holder Name'), validator: (v) => v!.isEmpty ? 'Required' : null),
+              TextFormField(
+                controller: _holderController,
+                decoration: const InputDecoration(
+                  labelText: 'Property Holder Name',
+                ),
+                validator: (v) => v!.isEmpty ? 'Required' : null,
+              ),
               const SizedBox(height: 12),
-              TextFormField(controller: _relationshipController, decoration: const InputDecoration(labelText: 'Relationship with Owner')),
+              TextFormField(
+                controller: _relationshipController,
+                decoration: const InputDecoration(
+                  labelText: 'Relationship with Owner',
+                ),
+              ),
               const SizedBox(height: 12),
-              TextFormField(controller: _addressController, decoration: const InputDecoration(labelText: 'Property Address'), maxLines: 2, validator: (v) => v!.isEmpty ? 'Required' : null),
+              TextFormField(
+                controller: _addressController,
+                decoration: const InputDecoration(
+                  labelText: 'Property Address',
+                ),
+                maxLines: 2,
+                validator: (v) => v!.isEmpty ? 'Required' : null,
+              ),
               const SizedBox(height: 12),
-              TextFormField(controller: _contactController, decoration: const InputDecoration(labelText: 'Contact Person')),
+              TextFormField(
+                controller: _contactController,
+                decoration: const InputDecoration(labelText: 'Contact Person'),
+              ),
               const SizedBox(height: 12),
-              TextFormField(controller: _emailController, decoration: const InputDecoration(labelText: 'Email')),
+              TextFormField(
+                controller: _emailController,
+                decoration: const InputDecoration(labelText: 'Email'),
+              ),
               const SizedBox(height: 12),
-              TextFormField(controller: _localContactController, decoration: const InputDecoration(labelText: 'Local Contact Details')),
+              TextFormField(
+                controller: _localContactController,
+                decoration: const InputDecoration(
+                  labelText: 'Local Contact Details',
+                ),
+              ),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
-                value: _propertyType,
+                initialValue: _propertyType,
                 decoration: const InputDecoration(labelText: 'Property Type'),
                 items: const [
-                  DropdownMenuItem(value: 'apartment', child: Text('Apartment')),
+                  DropdownMenuItem(
+                    value: 'apartment',
+                    child: Text('Apartment'),
+                  ),
                   DropdownMenuItem(value: 'villa', child: Text('Villa')),
                   DropdownMenuItem(value: 'plot', child: Text('Plot')),
-                  DropdownMenuItem(value: 'commercial', child: Text('Commercial')),
+                  DropdownMenuItem(
+                    value: 'commercial',
+                    child: Text('Commercial'),
+                  ),
                 ],
                 onChanged: (v) => setState(() => _propertyType = v!),
               ),
               const SizedBox(height: 24),
-              GradientButton(label: 'Save Property', onPressed: _submit, isLoading: _loading),
+              GradientButton(
+                label: 'Save Property',
+                onPressed: _submit,
+                isLoading: _loading,
+              ),
             ],
           ),
         ),

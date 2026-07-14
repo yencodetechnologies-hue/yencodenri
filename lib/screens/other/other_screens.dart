@@ -38,9 +38,15 @@ class _ConstructionScreenState extends State<ConstructionScreen> {
         'description': _descController.text,
       });
       _load();
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Request submitted')));
+      if (mounted)
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Request submitted')));
     } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      if (mounted)
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -56,30 +62,62 @@ class _ConstructionScreenState extends State<ConstructionScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             DropdownButtonFormField<String>(
-              value: _serviceType,
+              initialValue: _serviceType,
               decoration: const InputDecoration(labelText: 'Service Type'),
               items: const [
-                DropdownMenuItem(value: 'new_construction', child: Text('New House Construction')),
-                DropdownMenuItem(value: 'renovation', child: Text('Renovation')),
-                DropdownMenuItem(value: 'interior_design', child: Text('Interior Design')),
-                DropdownMenuItem(value: 'architecture', child: Text('Architecture')),
-                DropdownMenuItem(value: 'structural_consulting', child: Text('Structural Consulting')),
+                DropdownMenuItem(
+                  value: 'new_construction',
+                  child: Text('New House Construction'),
+                ),
+                DropdownMenuItem(
+                  value: 'renovation',
+                  child: Text('Renovation'),
+                ),
+                DropdownMenuItem(
+                  value: 'interior_design',
+                  child: Text('Interior Design'),
+                ),
+                DropdownMenuItem(
+                  value: 'architecture',
+                  child: Text('Architecture'),
+                ),
+                DropdownMenuItem(
+                  value: 'structural_consulting',
+                  child: Text('Structural Consulting'),
+                ),
               ],
               onChanged: (v) => setState(() => _serviceType = v!),
             ),
             const SizedBox(height: 12),
-            TextField(controller: _descController, decoration: const InputDecoration(labelText: 'Project Description'), maxLines: 3),
+            TextField(
+              controller: _descController,
+              decoration: const InputDecoration(
+                labelText: 'Project Description',
+              ),
+              maxLines: 3,
+            ),
             const SizedBox(height: 16),
-            GradientButton(label: 'Request Quotation', onPressed: _request, isLoading: _loading),
+            GradientButton(
+              label: 'Request Quotation',
+              onPressed: _request,
+              isLoading: _loading,
+            ),
             const SizedBox(height: 24),
-            const Text('My Projects', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            ..._projects.map((p) => Card(
-                  child: ListTile(
-                    title: Text(p['serviceType']?.toString().replaceAll('_', ' ') ?? ''),
-                    subtitle: Text('Quote: ₹${p['quotation'] ?? 0}'),
-                    trailing: StatusBadge(status: p['status'] ?? 'requested'),
+            const Text(
+              'My Projects',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            ..._projects.map(
+              (p) => Card(
+                child: ListTile(
+                  title: Text(
+                    p['serviceType']?.toString().replaceAll('_', ' ') ?? '',
                   ),
-                )),
+                  subtitle: Text('Quote: ₹${p['quotation'] ?? 0}'),
+                  trailing: StatusBadge(status: p['status'] ?? 'requested'),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -121,9 +159,15 @@ class _LegalScreenState extends State<LegalScreen> {
         'description': _descController.text,
       });
       _load();
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Legal service requested')));
+      if (mounted)
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Legal service requested')),
+        );
     } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      if (mounted)
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -139,29 +183,59 @@ class _LegalScreenState extends State<LegalScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             DropdownButtonFormField<String>(
-              value: _serviceType,
+              initialValue: _serviceType,
               decoration: const InputDecoration(labelText: 'Service Type'),
               items: const [
-                DropdownMenuItem(value: 'property_verification', child: Text('Property Verification')),
-                DropdownMenuItem(value: 'document_verification', child: Text('Document Verification')),
-                DropdownMenuItem(value: 'sale_deed_registration', child: Text('Sale Deed Registration')),
-                DropdownMenuItem(value: 'rental_agreement_registration', child: Text('Rental Agreement Registration')),
-                DropdownMenuItem(value: 'legal_consultation', child: Text('Legal Consultation')),
+                DropdownMenuItem(
+                  value: 'property_verification',
+                  child: Text('Property Verification'),
+                ),
+                DropdownMenuItem(
+                  value: 'document_verification',
+                  child: Text('Document Verification'),
+                ),
+                DropdownMenuItem(
+                  value: 'sale_deed_registration',
+                  child: Text('Sale Deed Registration'),
+                ),
+                DropdownMenuItem(
+                  value: 'rental_agreement_registration',
+                  child: Text('Rental Agreement Registration'),
+                ),
+                DropdownMenuItem(
+                  value: 'legal_consultation',
+                  child: Text('Legal Consultation'),
+                ),
               ],
               onChanged: (v) => setState(() => _serviceType = v!),
             ),
             const SizedBox(height: 12),
-            TextField(controller: _descController, decoration: const InputDecoration(labelText: 'Description'), maxLines: 3),
+            TextField(
+              controller: _descController,
+              decoration: const InputDecoration(labelText: 'Description'),
+              maxLines: 3,
+            ),
             const SizedBox(height: 16),
-            GradientButton(label: 'Book Lawyer', onPressed: _submit, isLoading: _loading),
+            GradientButton(
+              label: 'Book Lawyer',
+              onPressed: _submit,
+              isLoading: _loading,
+            ),
             const SizedBox(height: 24),
-            const Text('My Cases', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            ..._cases.map((c) => Card(
-                  child: ListTile(
-                    title: Text(c['serviceType']?.toString().replaceAll('_', ' ') ?? ''),
-                    trailing: StatusBadge(status: c['status'] ?? 'requested'),
+            const Text(
+              'My Cases',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            ..._cases.map(
+              (c) => Card(
+                child: ListTile(
+                  title: Text(
+                    c['serviceType']?.toString().replaceAll('_', ' ') ?? '',
                   ),
-                )),
+                  trailing: StatusBadge(status: c['status'] ?? 'requested'),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -190,7 +264,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     try {
       final fees = await _api.getFees();
       final subs = await _api.getMySubscriptions();
-      if (mounted) setState(() { _fees = fees; _subscriptions = subs; });
+      if (mounted)
+        setState(() {
+          _fees = fees;
+          _subscriptions = subs;
+        });
     } catch (_) {}
   }
 
@@ -198,14 +276,25 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     try {
       final props = await _api.getProperties();
       if (props.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Add a property first')));
+        if (mounted)
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('Add a property first')));
         return;
       }
       await _api.createSubscription(props.first['_id']);
       _load();
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Subscription initiated - ₹14,160 (incl. GST)')));
+      if (mounted)
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Subscription initiated - ₹14,160 (incl. GST)'),
+          ),
+        );
     } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      if (mounted)
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 
@@ -222,7 +311,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Annual Subscription', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  const Text(
+                    'Annual Subscription',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                   const Text('₹12,000 + 18% GST = ₹14,160 per property/year'),
                   const SizedBox(height: 12),
                   GradientButton(label: 'Subscribe Now', onPressed: _subscribe),
@@ -231,18 +323,28 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             ),
           ),
           const SizedBox(height: 16),
-          const Text('Fee Schedule', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          ..._fees.map((f) => ListTile(
-                title: Text(f['feeType'] ?? ''),
-                subtitle: Text(f['description'] ?? ''),
-                trailing: Text(f['amount'] == 0 ? 'Quoted' : '₹${f['amount']}'),
-              )),
+          const Text(
+            'Fee Schedule',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          ..._fees.map(
+            (f) => ListTile(
+              title: Text(f['feeType'] ?? ''),
+              subtitle: Text(f['description'] ?? ''),
+              trailing: Text(f['amount'] == 0 ? 'Quoted' : '₹${f['amount']}'),
+            ),
+          ),
           const SizedBox(height: 16),
-          const Text('My Subscriptions', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          ..._subscriptions.map((s) => ListTile(
-                title: Text('₹${s['totalAmount']}'),
-                trailing: StatusBadge(status: s['status'] ?? 'pending'),
-              )),
+          const Text(
+            'My Subscriptions',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          ..._subscriptions.map(
+            (s) => ListTile(
+              title: Text('₹${s['totalAmount']}'),
+              trailing: StatusBadge(status: s['status'] ?? 'pending'),
+            ),
+          ),
         ],
       ),
     );
@@ -281,7 +383,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
         itemBuilder: (context, i) {
           final n = _notifications[i];
           return ListTile(
-            leading: Icon(n['isRead'] == true ? Icons.notifications : Icons.notifications_active),
+            leading: Icon(
+              n['isRead'] == true
+                  ? Icons.notifications
+                  : Icons.notifications_active,
+            ),
             title: Text(n['title'] ?? ''),
             subtitle: Text(n['body'] ?? ''),
           );

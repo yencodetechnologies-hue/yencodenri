@@ -1,9 +1,13 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 
 module.exports = {
   port: process.env.PORT || 3013,
   nodeEnv: process.env.NODE_ENV || 'development',
-  mongodbUri: process.env.MONGO_URI || process.env.MONGO_URI || 'mongodb+srv://Nrimanagement:Nrimanagement@cluster0.taqxeap.mongodb.net/?appName=Cluster0',
+  mongodbUri:
+    process.env.MONGODB_URI ||
+    process.env.MONGO_URI ||
+    'mongodb://localhost:27017/nri_property_management',
   jwtSecret: process.env.JWT_SECRET || 'dev_secret_change_me',
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
   smtp: {
